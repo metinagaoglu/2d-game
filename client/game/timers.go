@@ -1,8 +1,8 @@
 package game
 
 import (
-	"time"
 	"github.com/hajimehoshi/ebiten/v2"
+	"time"
 )
 
 type Timer struct {
