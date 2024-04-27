@@ -1,9 +1,11 @@
 package main
 
 import (
-	. "assets"
 	"fmt"
 	"github.com/hajimehoshi/ebiten/v2"
+	. "github.com/metinagaoglu/2d-game/assets"
+	. "github.com/metinagaoglu/2d-game/game"
+	"time"
 )
 
 type Vector struct {
@@ -13,9 +15,18 @@ type Vector struct {
 
 type Game struct {
 	playerPosition Vector
+	attackTimer    *Timer
 }
 
 func (g *Game) Update() error {
+	// Update the attack timer
+	g.attackTimer.Update()
+
+	if g.attackTimer.IsReady() {
+		fmt.Println("Attack ready")
+		g.attackTimer.Reset()
+	}
+
 	speed := 5.0
 
 	if ebiten.IsKeyPressed(ebiten.KeyA) {
@@ -41,7 +52,7 @@ func (g *Game) Update() error {
 	// Handle sapce for debug
 	if ebiten.IsKeyPressed(ebiten.KeySpace) {
 		fmt.Println("Space pressed")
-		fmt.Println(g.playerPosition)
+		fmt.Println("X: ", g.playerPosition.X, "Y: ", g.playerPosition.Y)
 	}
 
 	return nil
@@ -50,6 +61,7 @@ func (g *Game) Update() error {
 func (g *Game) Draw(screen *ebiten.Image) {
 	op := &ebiten.DrawImageOptions{}
 	op.GeoM.Translate(g.playerPosition.X, g.playerPosition.Y)
+	// White
 	screen.DrawImage(PlayerSprite, op)
 }
 
@@ -60,6 +72,7 @@ func (g *Game) Layout(outsideWidth, outsideHeight int) (screenWidth, screenHeigh
 func main() {
 	g := &Game{
 		playerPosition: Vector{X: 100, Y: 300},
+		attackTimer:    NewTimer(5 * time.Second),
 	}
 
 	err := ebiten.RunGame(g)

@@ -1,16 +1,18 @@
-module sample-2d-game
+module github.com/metinagaoglu/2d-game
 
 go 1.22.1
 
-replace assets => ./assets
+replace github.com/metinagaoglu/2d-game/assets => ./assets
+replace github.com/metinagaoglu/2d-game/game => ./game
+
+require github.com/hajimehoshi/ebiten/v2 v2.7.2
 
 require (
-	assets v0.0.0-00010101000000-000000000000 // indirect
 	github.com/ebitengine/gomobile v0.0.0-20240329170434-1771503ff0a8 // indirect
 	github.com/ebitengine/hideconsole v1.0.0 // indirect
 	github.com/ebitengine/purego v0.7.0 // indirect
-	github.com/hajimehoshi/ebiten/v2 v2.7.2 // indirect
 	github.com/jezek/xgb v1.1.1 // indirect
+	github.com/metinagaoglu/2d-game/assets v0.0.0-00010101000000-000000000000 // indirect
 	golang.org/x/sync v0.6.0 // indirect
 	golang.org/x/sys v0.18.0 // indirect
 )
