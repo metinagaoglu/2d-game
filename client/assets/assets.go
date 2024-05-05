@@ -10,6 +10,7 @@ import (
 
 var PlayerSprite = mustLoadImage("player.png")
 var MeteorSprites = mustLoadImages("meteors/*.png")
+var LaserSprite = mustLoadImage("laser.png")
 
 //go:embed *
 var assets embed.FS
