@@ -5,6 +5,7 @@ import (
 	. "github.com/metinagaoglu/2d-game/assets"
 	"math"
 	"math/rand"
+	"fmt"
 )
 
 type Meteor struct {
@@ -13,7 +14,7 @@ type Meteor struct {
 	movement Vector
 }
 
-func NewMeteor() *Meteor {
+func NewMeteor(baseVelocity float64) *Meteor {
 	sprite := MeteorSprites[rand.Intn(len(MeteorSprites))]
 
 	target := Vector{
@@ -31,16 +32,18 @@ func NewMeteor() *Meteor {
 		Y: target.Y + math.Sin(angle)*r,
 	}
 
-	// TODO: move Direction Logic:
-
 	// Randomized velocity
-	velocity := 0.25 + rand.Float64()*1.5
+	velocity := baseVelocity + rand.Float64() * 1.5
 
 	// Direction is the target minus the current position
-	normalizedDirection := Vector{
+	direction := Vector{
 		X: target.X - pos.X,
 		Y: target.Y - pos.Y,
 	}
+	// Normalize the direction
+	normalizedDirection := direction.Normalize()
+	fmt.Println(normalizedDirection)
+
 
 	// Multiply the direction by velocity
 	movement := Vector{
