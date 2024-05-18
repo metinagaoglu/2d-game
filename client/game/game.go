@@ -3,6 +3,7 @@ package game
 import (
 	"github.com/hajimehoshi/ebiten/v2"
 	"time"
+	"fmt"
 )
 
 const (
@@ -31,6 +32,7 @@ func (g *Game) Update() error {
 		g.velocityTimer.Reset()
 		g.baseVelocity += meteorSpeedUpAmount
 	}
+
 	// Update the attack timer
 	g.player.Update()
 	g.attackTimer.Update()
@@ -49,6 +51,19 @@ func (g *Game) Update() error {
 
 	for _, bullet := range g.bullets {
 		bullet.Update()
+	}
+
+	// Collision detection
+	for i, meteor := range g.meteors {
+		for j, bullet := range g.bullets {
+			//fmt.Println(meteor.Collider())
+			//fmt.Println(bullet.Collider())
+			if meteor.Collider().Intersects(bullet.Collider()) {
+				fmt.Println("COLLISION")
+				fmt.Println("i:", i, "j:", j)
+				fmt.Println("BAMMMM")
+			}
+		}
 	}
 
 	return nil
