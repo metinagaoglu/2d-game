@@ -10,9 +10,11 @@ const (
 	ScreenWidth  = 800
 	ScreenHeight = 600
 
-	baseMeteorVelocity = 0.25
-	meteorSpeedUpAmount = 0.1
-	meteorSpeedUpTime = 5 * time.Second
+	meteorSpawnTime = 1 * time.Second
+
+	baseMeteorVelocity = 0.50
+	meteorSpeedUpAmount = 0.05
+	meteorSpeedUpTime = 1 * time.Second
 )
 
 type Game struct {
@@ -35,14 +37,15 @@ func (g *Game) Update() error {
 
 	// Update the attack timer
 	g.player.Update()
-	g.attackTimer.Update()
 	g.meteorTimer.Update()
 
 	if g.meteorTimer.IsReady() {
+		fmt.Println("METEOR SPAWN")
 		g.meteorTimer.Reset()
-	
+
 		m := NewMeteor(g.baseVelocity)
 		g.meteors = append(g.meteors, m)
+		
 	}
 
 	for _, meteor := range g.meteors {
@@ -59,6 +62,8 @@ func (g *Game) Update() error {
 			//fmt.Println(meteor.Collider())
 			//fmt.Println(bullet.Collider())
 			if meteor.Collider().Intersects(bullet.Collider()) {
+				g.meteors = append(g.meteors[:i], g.meteors[i+1:]...)
+				g.bullets = append(g.bullets[:j], g.bullets[j+1:]...)
 				fmt.Println("COLLISION")
 				fmt.Println("i:", i, "j:", j)
 				fmt.Println("BAMMMM")
@@ -93,7 +98,7 @@ func NewGame() *Game {
 	g := &Game{
 		attackTimer: NewTimer(1000),
 		meteors:    []*Meteor{},
-		meteorTimer: NewTimer(3000),
+		meteorTimer: NewTimer(meteorSpawnTime),
 		baseVelocity: baseMeteorVelocity,
 		velocityTimer: NewTimer(meteorSpeedUpTime),
 	}

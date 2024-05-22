@@ -8,10 +8,17 @@ import (
 	"fmt"
 )
 
+const (
+	rotationSpeedMin = -0.02
+	rotationSpeedMax = 0.02
+)
+
 type Meteor struct {
 	position Vector
+	rotation float64
 	sprite   *ebiten.Image
 	movement Vector
+	rotationSpeed float64
 }
 
 func NewMeteor(baseVelocity float64) *Meteor {
@@ -54,6 +61,7 @@ func NewMeteor(baseVelocity float64) *Meteor {
 	return &Meteor{
 		position:pos,
 		sprite: sprite,
+		rotationSpeed: rotationSpeedMin + rand.Float64()*(rotationSpeedMax-rotationSpeedMin),
 		movement: movement,
 	}
 }
@@ -61,6 +69,7 @@ func NewMeteor(baseVelocity float64) *Meteor {
 func (m *Meteor) Update() {
 	m.position.Y += m.movement.Y
 	m.position.X += m.movement.X
+	m.rotation += m.rotationSpeed
 }
 
 func (m *Meteor) Draw(screen *ebiten.Image) {
