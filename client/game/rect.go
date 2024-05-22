@@ -1,18 +1,17 @@
 package game
 
-
 type Rect struct {
-	X float64
-	Y float64
-	Width float64
+	X      float64
+	Y      float64
+	Width  float64
 	Height float64
 }
 
 func NewRect(x, y, width, height float64) Rect {
 	return Rect{
-		X: x,
-		Y: y,
-		Width: width,
+		X:      x,
+		Y:      y,
+		Width:  width,
 		Height: height,
 	}
 }

@@ -1,11 +1,11 @@
 package game
 
 import (
+	"fmt"
 	"github.com/hajimehoshi/ebiten/v2"
 	. "github.com/metinagaoglu/2d-game/assets"
 	"math"
 	"math/rand"
-	"fmt"
 )
 
 const (
@@ -14,10 +14,10 @@ const (
 )
 
 type Meteor struct {
-	position Vector
-	rotation float64
-	sprite   *ebiten.Image
-	movement Vector
+	position      Vector
+	rotation      float64
+	sprite        *ebiten.Image
+	movement      Vector
 	rotationSpeed float64
 }
 
@@ -40,7 +40,7 @@ func NewMeteor(baseVelocity float64) *Meteor {
 	}
 
 	// Randomized velocity
-	velocity := baseVelocity + rand.Float64() * 1.5
+	velocity := baseVelocity + rand.Float64()*1.5
 
 	// Direction is the target minus the current position
 	direction := Vector{
@@ -51,7 +51,6 @@ func NewMeteor(baseVelocity float64) *Meteor {
 	normalizedDirection := direction.Normalize()
 	fmt.Println(normalizedDirection)
 
-
 	// Multiply the direction by velocity
 	movement := Vector{
 		X: normalizedDirection.X * velocity,
@@ -59,10 +58,10 @@ func NewMeteor(baseVelocity float64) *Meteor {
 	}
 
 	return &Meteor{
-		position:pos,
-		sprite: sprite,
+		position:      pos,
+		sprite:        sprite,
 		rotationSpeed: rotationSpeedMin + rand.Float64()*(rotationSpeedMax-rotationSpeedMin),
-		movement: movement,
+		movement:      movement,
 	}
 }
 

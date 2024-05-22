@@ -4,8 +4,8 @@ import (
 	"github.com/hajimehoshi/ebiten/v2"
 	. "github.com/metinagaoglu/2d-game/assets"
 	"log"
-	"time"
 	"math"
+	"time"
 )
 
 const (
@@ -16,10 +16,10 @@ const (
 )
 
 type Player struct {
-	game *Game
-	Position Vector
-	sprite   *ebiten.Image
-	rotation float64
+	game          *Game
+	Position      Vector
+	sprite        *ebiten.Image
+	rotation      float64
 	shootCooldown *Timer
 }
 
@@ -37,10 +37,10 @@ func NewPlayer(game *Game) *Player {
 	}
 
 	return &Player{
-		game: game,
-		Position: pos,
-		sprite:   PlayerSprite,
-		rotation: 0,
+		game:          game,
+		Position:      pos,
+		sprite:        PlayerSprite,
+		rotation:      0,
 		shootCooldown: NewTimer(shootCooldown),
 	}
 }
@@ -64,7 +64,6 @@ func (p *Player) Update() {
 		panic("Game Over") // TODO: fix this
 	}
 
-
 	// if ebiten.IsKeyPressed(ebiten.KeyW) {
 	// 	p.Position.Y -= speed
 	// }
@@ -81,7 +80,6 @@ func (p *Player) Update() {
 		bounds := p.sprite.Bounds()
 		halfW := float64(bounds.Dx()) / 2
 		halfH := float64(bounds.Dy()) / 2
-
 
 		spawnPos := Vector{
 			p.Position.X + halfW + math.Sin(p.rotation)*bulletSpawnOffset,
@@ -111,7 +109,7 @@ func (p *Player) Draw(screen *ebiten.Image) {
 
 func (p *Player) Collider() Rect {
 	bounds := p.sprite.Bounds()
-	
+
 	return NewRect(
 		p.Position.X,
 		p.Position.Y,

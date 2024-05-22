@@ -1,9 +1,9 @@
 package game
 
 import (
+	"fmt"
 	"github.com/hajimehoshi/ebiten/v2"
 	"time"
-	"fmt"
 )
 
 const (
@@ -12,17 +12,17 @@ const (
 
 	meteorSpawnTime = 1 * time.Second
 
-	baseMeteorVelocity = 0.50
+	baseMeteorVelocity  = 0.50
 	meteorSpeedUpAmount = 0.05
-	meteorSpeedUpTime = 1 * time.Second
+	meteorSpeedUpTime   = 1 * time.Second
 )
 
 type Game struct {
 	player      *Player
 	attackTimer *Timer
-	meteors    []*Meteor
+	meteors     []*Meteor
 	meteorTimer *Timer
-	bullets []*Bullet
+	bullets     []*Bullet
 
 	baseVelocity  float64
 	velocityTimer *Timer
@@ -45,7 +45,7 @@ func (g *Game) Update() error {
 
 		m := NewMeteor(g.baseVelocity)
 		g.meteors = append(g.meteors, m)
-		
+
 	}
 
 	for _, meteor := range g.meteors {
@@ -96,10 +96,10 @@ func (g *Game) AddBullet(b *Bullet) {
 
 func NewGame() *Game {
 	g := &Game{
-		attackTimer: NewTimer(1000),
-		meteors:    []*Meteor{},
-		meteorTimer: NewTimer(meteorSpawnTime),
-		baseVelocity: baseMeteorVelocity,
+		attackTimer:   NewTimer(1000),
+		meteors:       []*Meteor{},
+		meteorTimer:   NewTimer(meteorSpawnTime),
+		baseVelocity:  baseMeteorVelocity,
 		velocityTimer: NewTimer(meteorSpeedUpTime),
 	}
 

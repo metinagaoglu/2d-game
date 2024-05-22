@@ -1,9 +1,9 @@
 package game
 
 import (
-	"math"
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/metinagaoglu/2d-game/assets"
+	"math"
 )
 
 const (
@@ -13,7 +13,7 @@ const (
 type Bullet struct {
 	position Vector
 	rotation float64
-	sprite  *ebiten.Image
+	sprite   *ebiten.Image
 }
 
 func NewBullet(pos Vector, rotation float64) *Bullet {
@@ -29,7 +29,7 @@ func NewBullet(pos Vector, rotation float64) *Bullet {
 	b := &Bullet{
 		position: pos,
 		rotation: rotation,
-		sprite: sprite,
+		sprite:   sprite,
 	}
 
 	return b
