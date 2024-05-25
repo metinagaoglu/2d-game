@@ -3,6 +3,9 @@ package game
 import (
 	"fmt"
 	"github.com/hajimehoshi/ebiten/v2"
+	"github.com/hajimehoshi/ebiten/v2/text"
+	"github.com/metinagaoglu/2d-game/assets"
+	"image/color"
 	"time"
 )
 
@@ -26,6 +29,9 @@ type Game struct {
 
 	baseVelocity  float64
 	velocityTimer *Timer
+
+	score int
+	hot   float32
 }
 
 func (g *Game) Update() error {
@@ -39,8 +45,8 @@ func (g *Game) Update() error {
 	g.player.Update()
 	g.meteorTimer.Update()
 
+	g.hot -= 0.2
 	if g.meteorTimer.IsReady() {
-		fmt.Println("METEOR SPAWN")
 		g.meteorTimer.Reset()
 
 		m := NewMeteor(g.baseVelocity)
@@ -64,6 +70,7 @@ func (g *Game) Update() error {
 			if meteor.Collider().Intersects(bullet.Collider()) {
 				g.meteors = append(g.meteors[:i], g.meteors[i+1:]...)
 				g.bullets = append(g.bullets[:j], g.bullets[j+1:]...)
+				g.score++
 				fmt.Println("COLLISION")
 				fmt.Println("i:", i, "j:", j)
 				fmt.Println("BAMMMM")
@@ -75,6 +82,7 @@ func (g *Game) Update() error {
 		if meteor.Collider().Intersects(g.player.Collider()) {
 			fmt.Println("PLAYER HIT")
 			g.Reset()
+			break
 		}
 	}
 
@@ -91,6 +99,9 @@ func (g *Game) Draw(screen *ebiten.Image) {
 	for _, bullet := range g.bullets {
 		bullet.Draw(screen)
 	}
+
+	text.Draw(screen, fmt.Sprintf("%06d", g.score), assets.ScoreFont, ScreenWidth/2-100, 50, color.White)
+	text.Draw(screen, fmt.Sprintf("\n%.2f", g.hot), assets.ScoreFont, ScreenWidth/2-100, 50, color.White)
 }
 
 func (g *Game) Layout(outsideWidth, outsideHeight int) (screenWidth, screenHeight int) {
@@ -98,13 +109,19 @@ func (g *Game) Layout(outsideWidth, outsideHeight int) (screenWidth, screenHeigh
 }
 
 func (g *Game) AddBullet(b *Bullet) {
+	if g.hot >= 100 {
+		return
+	}
 	g.bullets = append(g.bullets, b)
+	g.hot += 5
 }
 
 func (g *Game) Reset() {
 	g.player = NewPlayer(g)
 	g.meteors = nil
 	g.bullets = nil
+	g.score = 0
+	// Send HTTP Request to save the score
 }
 
 func NewGame() *Game {
